@@ -46,7 +46,13 @@ void addnode() {
         Node* current = START; // step 1.a : start from the first node
         Node* previous = NULL; // step 1.b : previous node is null initially
 
-       
+        // looping selama current != NULL dan noMHS dari current < noMHS newNode
+        while (current != NULL && current->noMHS < newNode->noMHS) {
+            previous = current; // step 1.d: move the previous to the current
+            current = current->next; // step 1.e: move the current to the next
+        }
+
+        
     }
 }
 
