@@ -28,6 +28,12 @@ void addnode() {
     // Insert the new node in the list
     // kondisi jika star == null atau noMHS node baru <= noMHS start
     if (START == NULL || newNode->noMHS <= START->noMHS) {
+        // step 2: insert the new code at the beginning
+        // kondisi jika star tidak kosong dan noMHS node baru sama dengan noMHS 
+        if (START != NULL && newNode->noMHS == START->noMHS) {
+            cout << "\033[31mDuplicate roll numbers not allowed\33[0m" << endl;
+            return;
+        }
         
     }
 }
