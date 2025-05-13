@@ -128,3 +128,24 @@ void deletenode() {
     
 }
 
+//method untuk mencek apakah list kosong
+bool listEmpty(){
+    return (START == NULL);
+}
+
+//prosedur traverse untuk menampilkan data secara urut
+
+void traverse(){
+    if (listEmpty()){
+        cout <<"\nList is empty" <<endl;
+    }
+    else{
+        cout<<"\nRecords in ascending order of roll number are:"<<endl;
+        Node *currentNode = START; //Step 1
+        while (currentNode != NULL){
+            cout<<currentNode ->noMHS<< " "<<currentNode -> name<<endl;
+            currentNode = currentNode -> prev;
+        } //step 2
+
+    }
+}
