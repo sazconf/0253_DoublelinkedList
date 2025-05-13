@@ -3,10 +3,8 @@ using namespace std;
 
 // membuat struktur untuk object double linkedList
 struct Node {
-    // deklarasi noMHS dan name untuk menampung data
     int noMHS;
     string name;
-    // deklarasi pointer next dan prev untuk data sebelum dan sesudah
     Node* next;
     Node* prev;
 };
@@ -16,88 +14,71 @@ Node* START = NULL;
 
 // deklarasi prosedur addnode
 void addnode() {
-    // pembuatan node dan pemberian value untuk data noMHS dan name
-    Node* newNode = new Node(); // step 1 buat node baru
+    Node* newNode = new Node(); 
     cout << "\nEnter the roll number of the student : ";
-    cin >> newNode->noMHS; // assign value to the data field of the new node
+    cin >> newNode->noMHS; 
     cout << "\nEnter the name of the student : ";
-    cin >> newNode->name; // Assign value to the data field of the new node
+    cin >> newNode->name;
 
-    // Insert the new node in the list
-    // kondisi jika START == NULL atau noMHS node baru <= noMHS START
     if (START == NULL || newNode->noMHS <= START->noMHS) {
-        // step 2: insert the new node at the beginning
-        // kondisi jika START tidak kosong dan noMHS node baru sama dengan noMHS START
         if (START != NULL && newNode->noMHS == START->noMHS) {
             cout << "\033[31mDuplicate roll numbers not allowed\033[0m" << endl;
-            delete newNode; // to free the allocated memory for the new node
+            delete newNode; 
             return;
         }
-        // if the list is empty, make the new node the start
-        newNode->next = START; // step 3: make the new node point to the first node
+        newNode->next = START; 
         if (START != NULL) {
-            START->prev = newNode; // step 4: make the first node point to the new node
+            START->prev = newNode;
         }
-        newNode->prev = NULL; // step 5 : make the new node's prev pointer null
-        START = newNode; // step 6 : make the new node the first node
-    }
-    else {
-        // insert the new node in the middle or at the end
-        Node* current = START; // step 1.a : start from the first node
-        Node* previous = NULL; // step 1.b : previous node is null initially
-
-        // looping selama current != NULL dan noMHS dari current < noMHS newNode
+        newNode->prev = NULL; 
+        START = newNode; 
+    } else {
+        Node* current = START; 
+        Node* previous = NULL; 
         while (current != NULL && current->noMHS < newNode->noMHS) {
-            previous = current; // step 1.d: move the previous to the current
-            current = current->next; // step 1.e: move the current to the next
+            previous = current;
+            current = current->next;
         }
-
-        // set nilai next node baru = current dan prev node baru = previous
-        newNode->next = current; // step 4: make the next field of the new node
-        newNode->prev = previous; // step 5: make the previous field of the new node
-
+        newNode->next = current; 
+        newNode->prev = previous; 
         if (current != NULL) {
-            current->prev = newNode; // step 6: make the previous field of the current node point to newNode
+            current->prev = newNode; 
         }
-
         if (previous != NULL) {
-            previous->next = newNode; // step 7: make the next field of the previous node point to newNode
-        }
-        else {
-            // if previous is still NULL, it means newNode is now the first node
+            previous->next = newNode; 
+        } else {
             START = newNode;
         }
     }
 }
 
 // pembuatan  function search untuk mencari data
-bool search (int rollNo, Node **previous, Node **current) {
+bool search(int rollNo, Node **previous, Node **current) {
     *previous = *current;
     *current = START;
     while (*current != NULL && (*current)->noMHS != rollNo) {
-        *previous= *current;
+        *previous = *current;
         *current = (*current)->next;
     }
     return (*current != NULL);
 }
 
-//pembuatan prosedur delete untuk menghapus data
+// prosedur delete untuk menghapus data
 void deletenode() {
     Node *previous, *current;
     int rollNo;
 
     cout << "\nEnter the roll number of the student whose record is to be delete  : ";
-    cin >> rollNo; //step 3: get the roll number to the deleted
+    cin >> rollNo;
 
     if (START == NULL) {
         cout << "list is empty" << endl;
         return;
     }
 
-    current = START; // step 1: start to the first node
+    current = START; 
     previous = NULL; 
 
-    //locate the node to be deleted
     while (current != NULL && current->noMHS != rollNo) {
         previous = current;
         current = current->next;
@@ -109,43 +90,116 @@ void deletenode() {
         return;
     }
 
-    //node to be deleted in the first node
-    if (current = START) {
-        START = START->next; // step 2: update the start pointer
-        if ( START!= NULL) {
+    if (current == START) {  // fixed the condition
+        START = START->next; 
+        if (START != NULL) {
             START->prev = NULL;
         }
-    }
-    else {
-        //node to be deleted is nor tyhe first node
+    } else {
         previous->next = current->next;
         if (current->next != NULL) {
-            // if theres a successor, update its prev pointer
             current->next->prev = previous;
         }
     }
-    
-    
+
+    delete current; // free the memory of the deleted node
 }
 
-//method untuk mencek apakah list kosong
-bool listEmpty(){
+// method untuk mencek apakah list kosong
+bool listEmpty() {
     return (START == NULL);
 }
 
-//prosedur traverse untuk menampilkan data secara urut
-
-void traverse(){
-    if (listEmpty()){
-        cout <<"\nList is empty" <<endl;
+// prosedur traverse untuk menampilkan data secara urut
+void traverse() {
+    if (listEmpty()) {
+        cout << "\nList is empty" << endl;
+    } else {
+        cout << "\nRecords in ascending order of roll number are:" << endl;
+        Node* currentNode = START;
+        while (currentNode != NULL) {  // corrected loop logic to print the list
+            cout << currentNode->noMHS << " " << currentNode->name << endl;
+            currentNode = currentNode->next;
+        }
     }
-    else{
-        cout<<"\nRecords in ascending order of roll number are:"<<endl;
-        Node *currentNode = START; //Step 1
-        while (currentNode != NULL){
-            cout<<currentNode ->noMHS<< " "<<currentNode -> name<<endl;
-            currentNode = currentNode -> prev;
-        } //step 2
+}
 
+// reverse traverse
+void revtraverse() {
+    if (listEmpty()) {
+        cout << "\nList is empty" << endl;
+    } else {
+        cout << "\nRecords in descending order of roll number are:" << endl;
+        Node* currentNode = START;
+        while (currentNode->next != NULL) {
+            currentNode = currentNode->next;
+        }
+        while (currentNode != NULL) {
+            cout << currentNode->noMHS << " " << currentNode->name << endl;
+            currentNode = currentNode->prev;
+        }
+    }
+}
+
+// search data
+void searchData() {
+    if (listEmpty()) {
+        cout << "\nList is empty" << endl;
+        return;
+    }
+
+    Node *prev, *curr;
+    prev = curr = NULL;
+    cout << "\nEnter the roll number of the student whose record you want to search:";
+    int num;
+    cin >> num;
+    if (search(num, &prev, &curr) == false) {
+        cout << "\nRecord not found" << endl;
+    } else {
+        cout << "\nRecord found" << endl;
+        cout << "\nRoll number: " << curr->noMHS << endl;
+        cout << "\nName: " << curr->name << endl;
+    }
+}
+
+int main() {
+    while (true) {
+        try {
+            cout << "\nMenu" << endl;
+            cout << "1. Add a record to the list " << endl;
+            cout << "2. Delete a record" << endl;
+            cout << "3. View all records in the ascending order of Roll number" << endl;
+            cout << "4. View all records in the descending order of Roll number" << endl;  // fixed typo
+            cout << "5. Search for a record" << endl;
+            cout << "6. Exit";
+            cout << "\nEnter your choice(1-6):";
+            char ch;
+            cin >> ch;
+
+            switch (ch) {
+                case '1':
+                    addnode();
+                    break;
+                case '2':
+                    deletenode();
+                    break;
+                case '3':
+                    traverse();
+                    break;
+                case '4':
+                    revtraverse();
+                    break;
+                case '5':
+                    searchData();
+                    break;
+                case '6':
+                    return 0;
+                default:
+                    cout << "\nInvalid choice" << endl;
+                    break;
+            }
+        } catch(exception &e) {
+            cout << "Check for the values entered. " << endl;
+        }
     }
 }
