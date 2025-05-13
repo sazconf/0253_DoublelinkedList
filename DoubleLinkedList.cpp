@@ -52,7 +52,21 @@ void addnode() {
             current = current->next; // step 1.e: move the current to the next
         }
 
-        
+        // set nilai next node baru = current dan prev node baru = previous
+        newNode->next = current; // step 4: make the next field of the new node
+        newNode->prev = previous; // step 5: make the previous field of the new node
+
+        if (current != NULL) {
+            current->prev = newNode; // step 6: make the previous field of the current node point to newNode
+        }
+
+        if (previous != NULL) {
+            previous->next = newNode; // step 7: make the next field of the previous node point to newNode
+        }
+        else {
+            // if previous is still NULL, it means newNode is now the first node
+            START = newNode;
+        }
     }
 }
 
