@@ -12,3 +12,11 @@ struct Node {
     Node*prev;
 };
 
+// deklarasi pointer START dan pemberian nilai
+Node*START = NULL;
+
+// deklarasi prosedur addnote
+void addnode() {
+
+    
+}
